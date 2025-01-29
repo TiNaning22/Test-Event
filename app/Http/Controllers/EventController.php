@@ -13,7 +13,12 @@ class EventController extends Controller
      */
     public function index()
     {
-        return Event::all();
+        $events = Event::where('date', '>=', now())
+        // ->where('available_tickets', '>', 0)
+        ->orderBy('date')
+        ->get();
+    
+    return view('event.index', compact('events'));
     }
 
     /**
