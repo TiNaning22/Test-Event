@@ -14,6 +14,7 @@ Route::get('/register', [AuthController::class, 'showRegister'])->name('show-reg
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('show-login');;
 Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/', [EventController::class, 'index'])->name('home');
 Route::resource('events', EventController::class);
