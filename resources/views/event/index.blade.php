@@ -22,12 +22,11 @@
                         <p class="card-text">{{ Str::limit($event->description, 100) }}</p>
                         <ul class="list-unstyled">
                             <li><strong>Location:</strong> {{ $event->location }}</li>
-                            <li><strong>Date:</strong> {{ $event->event_date->format('d M Y') }}</li>
-                            <li><strong>Time:</strong> {{ $event->event_time }}</li>
-                            <li><strong>Price:</strong> Rp {{ number_format($event->ticket_price, 0, ',', '.') }}</li>
-                            <li><strong>Available Tickets:</strong> {{ $event->available_tickets }}</li>
+                            <li><strong>Date:</strong> {{ $event->date }}</li>
+                            <li><strong>Price:</strong> Rp {{ number_format($event->price, 0, ',', '.') }}</li>
+                            <li><strong>Available Tickets:</strong> {{ $event->total_tiket }}</li>
                         </ul>
-                        <a href="{{ route('events.show', $event) }}" class="btn btn-primary">View Details</a>
+                        <a href="{{ route('events.show', $event->id) }}" class="btn btn-primary">View Details</a>
                     </div>
                 </div>
             </div>

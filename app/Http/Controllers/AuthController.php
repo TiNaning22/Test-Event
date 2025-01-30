@@ -8,6 +8,17 @@ use Illuminate\Routing\Controller;
 
 class AuthController extends Controller
 {
+
+    public function showLogin()
+    {
+        return view('auth.login');
+    }
+
+    public function showRegister()
+    {
+        return view('auth.register');
+    }
+
     public function register(Request $request)
     {
         $validated = $request->validate([
@@ -41,5 +52,12 @@ class AuthController extends Controller
         $token = auth()->user()->createToken('auth_token')->plainTextToken;
 
         return response()->json(['token' => $token, 'user' => auth()->user()]);
+    }
+
+    public function logout()
+    {
+        auth()->user()->tokens()->delete();
+
+        return response()->json(['message' => 'Logged out successfully'], 200);
     }
 }

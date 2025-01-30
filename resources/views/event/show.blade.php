@@ -13,10 +13,9 @@
                             <h5>Event Details</h5>
                             <ul class="list-unstyled">
                                 <li><strong>Location:</strong> {{ $event->location }}</li>
-                                <li><strong>Date:</strong> {{ $event->event_date->format('d M Y') }}</li>
-                                <li><strong>Time:</strong> {{ $event->event_time }}</li>
-                                <li><strong>Price:</strong> Rp {{ number_format($event->ticket_price, 0, ',', '.') }}</li>
-                                <li><strong>Available Tickets:</strong> {{ $event->available_tickets }}</li>
+                                <li><strong>Date:</strong> {{ $event->date }}</li>
+                                <li><strong>Price:</strong> Rp {{ number_format($event->price, 0, ',', '.') }}</li>
+                                <li><strong>Available Tickets:</strong> {{ $event->total_tiket }}</li>
                             </ul>
                         </div>
                     </div>

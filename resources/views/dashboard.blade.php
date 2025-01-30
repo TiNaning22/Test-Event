@@ -27,7 +27,7 @@
                                 @foreach($registrations as $registration)
                                     <tr>
                                         <td>{{ $registration->event->name }}</td>
-                                        <td>{{ $registration->event->event_date->format('d M Y') }}</td>
+                                        <td>{{ $registration->event->date }}</td>
                                         <td>{{ $registration->ticket_quantity }}</td>
                                         <td>Rp {{ number_format($registration->ticket_quantity * $registration->event->ticket_price, 0, ',', '.') }}</td>
                                         <td>

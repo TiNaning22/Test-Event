@@ -13,12 +13,14 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::where('date', '>=', now())
-        // ->where('available_tickets', '>', 0)
-        ->orderBy('date')
-        ->get();
+        // $events = Event::where('date', '>=', now())
+        // // ->where('available_tickets', '>', 0)
+        // ->orderBy('date')
+        // ->get();
+
+        $events = Event::all(); // Eloquent ORM (Query Builder)
     
-    return view('event.index', compact('events'));
+        return view('event.index', compact('events'));
     }
 
     /**
@@ -36,7 +38,9 @@ class EventController extends Controller
      */
     public function show(string $id)
     {
-        return Event::find($id);
+        $event = Event::find($id);
+
+        return view('event.show', compact('event'));
 
     }
 
