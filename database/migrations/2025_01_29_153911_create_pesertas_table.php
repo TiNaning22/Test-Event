@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('full_name');
             $table->string('email');
             $table->string('phone_number');
+            $table->string('ticket_quantity');
             $table->unsignedBigInteger('event_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

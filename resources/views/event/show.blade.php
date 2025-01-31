@@ -37,12 +37,12 @@
                             <input type="email" class="form-control" id="email" name="email" required>
                         </div>
                         <div class="mb-3">
-                            <label for="phone" class="form-label">Phone</label>
-                            <input type="tel" class="form-control" id="phone" name="phone" required>
+                            <label for="phone_number" class="form-label">Phone</label>
+                            <input type="tel" class="form-control" id="phone_number" name="phone_number" required>
                         </div>
                         <div class="mb-3">
                             <label for="ticket_quantity" class="form-label">Number of Tickets</label>
-                            <input type="number" class="form-control" id="ticket_quantity" name="ticket_quantity" min="1" max="{{ $event->available_tickets }}" required>
+                            <input type="number" class="form-control" id="ticket_quantity" name="ticket_quantity" min="1" max="{{ $event->total_tiket }}" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Register</button>
                     </form>

@@ -7,4 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Event extends Model
 {
     protected $guarded = ['id'];
+
+    public function peserta()
+    {
+        return $this->hasMany(Peserta::class);
+    }
 }

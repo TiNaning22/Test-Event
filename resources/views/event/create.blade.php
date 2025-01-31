@@ -22,20 +22,16 @@
                             <input type="text" class="form-control" id="location" name="location" required>
                         </div>
                         <div class="mb-3">
-                            <label for="event_date" class="form-label">Date</label>
-                            <input type="date" class="form-control" id="event_date" name="event_date" required>
+                            <label for="date" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="date" name="date" required>
                         </div>
                         <div class="mb-3">
-                            <label for="event_time" class="form-label">Time</label>
-                            <input type="time" class="form-control" id="event_time" name="event_time" required>
+                            <label for="price" class="form-label">Ticket Price</label>
+                            <input type="number" class="form-control" id="price" name="price" required>
                         </div>
                         <div class="mb-3">
-                            <label for="ticket_price" class="form-label">Ticket Price</label>
-                            <input type="number" class="form-control" id="ticket_price" name="ticket_price" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="available_tickets" class="form-label">Available Tickets</label>
-                            <input type="number" class="form-control" id="available_tickets" name="available_tickets" required>
+                            <label for="total_tiket" class="form-label">Available Tickets</label>
+                            <input type="number" class="form-control" id="total_tiket" name="total_tiket" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Create Event</button>
                     </form>

@@ -23,6 +23,11 @@ class EventController extends Controller
         return view('event.index', compact('events'));
     }
 
+    public function create()
+    {
+        return view('event.create');
+    }
+
     /**
      * Store a newly created resource in storage.
      */
