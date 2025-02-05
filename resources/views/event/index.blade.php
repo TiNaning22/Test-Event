@@ -6,11 +6,6 @@
         <div class="col">
             <h2>Available Events</h2>
         </div>
-        @auth
-            <div class="col text-end">
-                <a href="{{ route('events.create') }}" class="btn btn-primary">Create Event</a>
-            </div>
-        @endauth
     </div>
 
     <div class="row row-cols-1 row-cols-md-3 g-4">

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts-dashboard.main')
 
 @section('content')
 <div class="container">
@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">Create New Event</div>
                 <div class="card-body">
-                    <form action="{{ route('events.store') }}" method="POST">
+                    <form action="{{ route('dashboard.store') }}" method="POST">
                         @csrf
                         <div class="mb-3">
                             <label for="name" class="form-label">Event Name</label>

@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\PesertaController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TransaksiController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -20,4 +22,5 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/', [EventController::class, 'index'])->name('home');
 Route::resource('events', EventController::class);
 Route::post('events/{event}/register', [PesertaController::class, 'store'])->name('events.register');
-Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
+Route::resource('dashboard', App\Http\Controllers\DashboardController::class);
+Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
