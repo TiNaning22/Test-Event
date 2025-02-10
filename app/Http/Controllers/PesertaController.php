@@ -2,23 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use Midtrans\Snap;
+use Midtrans\Config;
 use App\Models\Event;
 use App\Models\Peserta;
 use Illuminate\Http\Request;
+use App\Services\MidtransService;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Midtrans\Config;
-use Midtrans\Snap;
 
-use Illuminate\Support\Facades\Mail;
 use App\Mail\PesertaRegisteredMail;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class PesertaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    
     public function index()
     {
         
@@ -43,7 +45,7 @@ class PesertaController extends Controller
         }
 
         DB::transaction(function () use ($event, $validated) {
-            $participant = $event->peserta()->create([
+            $peserta = $event->peserta()->create([
                 'full_name' => $validated['full_name'],
                 'email' => $validated['email'],
                 'phone_number' => $validated['phone_number'],
@@ -51,15 +53,43 @@ class PesertaController extends Controller
                 // 'payment_status' => 'pending'
             ]);
 
-            // $payment = $this->createMidtransPayment($participant, $event);
+            // $payment = $this->createMidtransPayment($peserta, $event);
+
+            return view('payment.payment');
             
             $event->decrement('total_tiket', $validated['ticket_quantity']);
             
-            // Send email notification
-            // Mail::to($validated['email'])->queue(new RegistrationConfirmation($participant));
-            
-            return view('payment.payment');
         });
+
+        $midtrans = new MidtransService();
+            $order_id = 'ORDER-' . $peserta->id . '-' . time();
+            
+            $transaction = $midtrans->createTransaction(
+                $order_id,
+                $peserta->ticket_quantity * $event->ticket_price,
+                [
+                    'first_name' => $peserta->full_name,
+                    'email' => $peserta->email,
+                    'phone' => $peserta->phone,
+                ]
+            );
+        
+            if ($transaction['success']) {
+                Payment::create([
+                    'peserta_id' => $peserta->id,
+                    'event_id' => $event->id,
+                    'order_id' => $order_id,
+                    'amount' => $peserta->ticket_quantity * $event->ticket_price,
+                    'snap_token' => $transaction['snap_token']
+                ]);
+        
+                
+            }
+        
+            return response()->json([
+                'message' => 'Payment creation failed'
+            ], 500);
+            
     }
 
     /**

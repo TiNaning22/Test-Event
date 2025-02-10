@@ -6,6 +6,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\PesertaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\PaymentController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -24,3 +25,6 @@ Route::resource('events', EventController::class);
 Route::post('events/{event}/register', [PesertaController::class, 'store'])->name('events.register');
 Route::resource('dashboard', App\Http\Controllers\DashboardController::class);
 Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
+
+Route::get('/payment', [PaymentController::class, 'index'])->name('payment.index');
+Route::post('payments/token/{participant}', [PaymentController::class, 'generateToken']);
