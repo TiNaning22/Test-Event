@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Peserta extends Model
 {
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'full_name',
+        'email',
+        'phone_number',
+        'ticket_quantity',
+    ];
 
     public function event()
     {

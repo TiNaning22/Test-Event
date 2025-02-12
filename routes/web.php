@@ -22,7 +22,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/', [EventController::class, 'index'])->name('home');
 Route::resource('events', EventController::class);
-Route::post('events/{event}/register', [PesertaController::class, 'store'])->name('events.register');
+Route::post('events/{event}', [PesertaController::class, 'store'])->name('events.register');
 Route::resource('dashboard', App\Http\Controllers\DashboardController::class);
 Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
 

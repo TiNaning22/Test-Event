@@ -6,6 +6,7 @@ use Midtrans\Snap;
 use Midtrans\Config;
 use App\Models\Event;
 use App\Models\Peserta;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Services\MidtransService;
 use Illuminate\Routing\Controller;
@@ -37,59 +38,65 @@ class PesertaController extends Controller
             'phone_number' => 'required|string',
             'ticket_quantity' => 'required|integer|min:1'
         ]);
-
+    
         if ($event->total_tiket < $validated['ticket_quantity']) {
             return response()->json([
                 'message' => 'Insufficient tickets available'
             ], 400);
         }
-
-        DB::transaction(function () use ($event, $validated) {
+    
+        $peserta = DB::transaction(function () use ($event, $validated) {
             $peserta = $event->peserta()->create([
                 'full_name' => $validated['full_name'],
                 'email' => $validated['email'],
                 'phone_number' => $validated['phone_number'],
                 'ticket_quantity' => $validated['ticket_quantity']
-                // 'payment_status' => 'pending'
             ]);
-
-            // $payment = $this->createMidtransPayment($peserta, $event);
-
-            return view('payment.payment');
-            
+    
             $event->decrement('total_tiket', $validated['ticket_quantity']);
-            
+    
+            return $peserta;
         });
-
-        $midtrans = new MidtransService();
-            $order_id = 'ORDER-' . $peserta->id . '-' . time();
-            
-            $transaction = $midtrans->createTransaction(
-                $order_id,
-                $peserta->ticket_quantity * $event->ticket_price,
-                [
-                    'first_name' => $peserta->full_name,
-                    'email' => $peserta->email,
-                    'phone' => $peserta->phone,
-                ]
-            );
-        
-            if ($transaction['success']) {
-                Payment::create([
-                    'peserta_id' => $peserta->id,
-                    'event_id' => $event->id,
-                    'order_id' => $order_id,
-                    'amount' => $peserta->ticket_quantity * $event->ticket_price,
-                    'snap_token' => $transaction['snap_token']
-                ]);
-        
-                
-            }
-        
+    
+        if (!$peserta) {
             return response()->json([
-                'message' => 'Payment creation failed'
+                'message' => 'Failed to create participant'
             ], 500);
-            
+        }
+    
+        $midtrans = new MidtransService();
+        $order_id = 'ORDER-' . $peserta->id . '-' . time();
+        
+        $transaction = $midtrans->createTransaction(
+            $order_id,
+            $peserta->ticket_quantity * $event->price,
+            [
+                'first_name' => $peserta->full_name,
+                'email' => $peserta->email,
+                'phone' => $peserta->phone_number,
+            ]
+        );
+    
+        if ($transaction['success']) {
+           $payment = Payment::create([
+                'peserta_id' => $peserta->id,
+                'event_id' => $event->id,
+                'order_id' => $order_id,
+                'amount' => $peserta->ticket_quantity * $event->price,
+                'snap_token' => $transaction['snap_token']
+            ]);
+    
+            return view('payment.payment', [
+                'snap_token' => $transaction['snap_token'],
+                'payments' => [$payment],
+                'event' => $event,
+                'peserta' => $peserta,
+            ]);
+        }
+    
+        return response()->json([
+            'message' => 'Payment creation failed'
+        ], 500);
     }
 
     /**

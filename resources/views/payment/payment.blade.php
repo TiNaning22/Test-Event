@@ -11,9 +11,6 @@
                 <div class="card-body">
                     <div class="order-summary mb-4">
                         <h4>Order Summary</h4>
-                        @foreach ($payments as $item)
-                            
-                       
                         <table class="table">
                             <tr>
                                 <td>Event</td>
@@ -25,14 +22,13 @@
                             </tr>
                             <tr>
                                 <td>Price per Ticket</td>
-                                <td>Rp {{ number_format($event->ticket_price, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($event->price, 0, ',', '.') }}</td>
                             </tr>
                             <tr class="fw-bold">
                                 <td>Total Amount</td>
-                                <td>Rp {{ number_format($peserta->ticket_quantity * $event->ticket_price, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($peserta->ticket_quantity * $event->price, 0, ',', '.') }}</td>
                             </tr>
                         </table>
-                        @endforeach
                     </div>
 
                     <div class="payment-buttons text-center">
